@@ -11,6 +11,6 @@ class BooklistTableSeeder extends Seeder
      */
     public function run()
     {
-        factory('App\Booklists',30)->create();
+      //   factory('App\Booklists',30)->create();
     }
 }

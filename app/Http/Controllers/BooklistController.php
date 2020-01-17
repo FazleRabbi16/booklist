@@ -98,8 +98,6 @@ class BooklistController extends Controller
             "author"=>$request->input('author'),
             "body"=>$request->input('body')
         ]);
-
-       //dd($request->input('bookname')); 
     }
 
     /**

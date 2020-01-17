@@ -23,6 +23,6 @@ Route::get('booklist/{id}','BooklistController@show');
 //Create new book 
 Route::post('booklist','BooklistController@store');
 //update a book
-Route::put('booklist/{id}','BooklistController@store');
+Route::put('booklist/{id}','BooklistController@update');
 //Delete a book
 Route::delete('booklist/{id}','BooklistController@destroy');

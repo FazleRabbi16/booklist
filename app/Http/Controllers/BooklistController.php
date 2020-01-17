@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 use App\Http\Resources\Booklist as BooklistResource;
 use Illuminate\Http\Request;
-use DB;
 use App\Booklist;
-
+use DB;
 class BooklistController extends Controller
+
 {
     /**
      * Display a listing of the resource.
@@ -16,11 +16,9 @@ class BooklistController extends Controller
     public function index()
     {
         // get all booklist
-        //$booklists = Booklist::all();
-        $booklists =DB::table('booklists')->select(['id','bookname','body'])->paginate(15);
+        $booklists = Booklist::paginate(15);
         // get all booklists as resource
-        return $booklists;
-       // return new BooklistResource($booklists);
+        return  BooklistResource::collection($booklists);
     }
 
     /**
@@ -47,12 +45,11 @@ class BooklistController extends Controller
             'bookname'=>'required',
             ]);
         */
-        $input = DB::table('booklists')->insert([
-            'bookname'=>$request->input('bookname'),
-            'author'=>$request->input('author'),
-            'body'=>$request->input('body')
-        ]);
-
+        $book = new Booklist();
+        $book->bookname=$request->input('bookname');
+        $book->author=$request->input('author');
+        $book->body=$request->input('body');
+        $book->save();
     }
 
     /**
@@ -87,7 +84,19 @@ class BooklistController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+         /*
+        validate data if needed for font-end
+        $request->validate([
+            'bookname'=>'required',
+            ]);
+        */
+        $update = DB::table('booklists')->where(['id'=>$id])->update([
+            "bookname"=>$request->input('bookname'),
+            "author"=>$request->input('author'),
+            "body"=>$request->input('body')
+        ]);
+
+       //dd($request->input('bookname')); 
     }
 
     /**

@@ -18,6 +18,8 @@ class Booklist extends JsonResource
         return [
             'id'=>$this->id,
             'bookname'=>$this->bookname,
+            'author'=>$this->author,
+            'body'=>$this->body
         ];
     }
 }

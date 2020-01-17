@@ -49,7 +49,12 @@ class BooklistController extends Controller
         $book->bookname=$request->input('bookname');
         $book->author=$request->input('author');
         $book->body=$request->input('body');
-        $book->save();
+        //$book->save();
+        //$book->id;
+        if ($book->save()){
+            return new BooklistResource(Booklist::find($book->id));
+        }
+        
     }
 
     /**

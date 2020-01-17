@@ -93,7 +93,7 @@ class BooklistController extends Controller
             'bookname'=>'required',
             ]);
         */
-        $update = DB::table('booklists')->where(['id'=>$id])->update([
+        $update = Booklist::where(['id'=>$id])->update([
             "bookname"=>$request->input('bookname'),
             "author"=>$request->input('author'),
             "body"=>$request->input('body')

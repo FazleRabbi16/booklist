@@ -1,8 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Http\Resources\Booklist as BooklistResource;
 use Illuminate\Http\Request;
+use DB;
+use App\Booklist;
 
 class BooklistController extends Controller
 {
@@ -13,7 +15,12 @@ class BooklistController extends Controller
      */
     public function index()
     {
-        //
+        // get all booklist
+        //$booklists = Booklist::all();
+        $booklists =DB::table('booklists')->select(['id','bookname','body'])->paginate(15);
+        // get all booklists as resource
+        return $booklists;
+       // return new BooklistResource($booklists);
     }
 
     /**
@@ -34,7 +41,18 @@ class BooklistController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        /*
+        validate data if needed for font-end
+        $request->validate([
+            'bookname'=>'required',
+            ]);
+        */
+        $input = DB::table('booklists')->insert([
+            'bookname'=>$request->input('bookname'),
+            'author'=>$request->input('author'),
+            'body'=>$request->input('body')
+        ]);
+
     }
 
     /**
@@ -45,7 +63,8 @@ class BooklistController extends Controller
      */
     public function show($id)
     {
-        // 
+        $book= DB::table('booklists')->where(["id"=>$id])->get();
+        return $book;
     }
 
     /**
@@ -79,6 +98,6 @@ class BooklistController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $book_delete= DB::table('booklists')->where(["id"=>$id])->delete();
     }
 }

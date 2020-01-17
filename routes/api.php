@@ -16,3 +16,13 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+//get all booklists
+Route::get('/booklists','BooklistController@index');
+//get Single booklist
+Route::get('booklist/{id}','BooklistController@show');
+//Create new book 
+Route::post('booklist','BooklistController@store');
+//update a book
+Route::put('booklist/{id}','BooklistController@store');
+//Delete a book
+Route::delete('booklist/{id}','BooklistController@destroy');

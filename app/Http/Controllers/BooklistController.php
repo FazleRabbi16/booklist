@@ -60,8 +60,8 @@ class BooklistController extends Controller
      */
     public function show($id)
     {
-        $book= DB::table('booklists')->where(["id"=>$id])->get();
-        return $book;
+        $book= Booklist::find($id);
+        return new BooklistResource($book);
     }
 
     /**

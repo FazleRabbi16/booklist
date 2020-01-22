@@ -13,9 +13,9 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:api')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 //get all booklists
 Route::get('/booklists','BooklistController@index');
 //get Single booklist
@@ -26,3 +26,5 @@ Route::post('booklist','BooklistController@store');
 Route::put('booklist/{id}','BooklistController@update');
 //Delete a book
 Route::delete('booklist/{id}','BooklistController@destroy');
+//test route 
+Route::get('/test','BooklistController@test');

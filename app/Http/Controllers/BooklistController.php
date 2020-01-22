@@ -16,7 +16,7 @@ class BooklistController extends Controller
     public function index()
     {
         // get all booklist
-        $booklists = Booklist::paginate(15);
+        $booklists = Booklist::orderBy('bookname','ASC')->paginate(5);
         // get all booklists as resource
         return  BooklistResource::collection($booklists);
     }
@@ -109,5 +109,8 @@ class BooklistController extends Controller
     public function destroy($id)
     {
         $book_delete= Booklist::where(["id"=>$id])->delete();
+    }
+    public function test(){
+        return view('test');
     }
 }

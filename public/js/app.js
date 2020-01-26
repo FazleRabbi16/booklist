@@ -1942,10 +1942,21 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      booklists: []
+      booklists: [],
+      pagination: {}
     };
   },
   //about created https://vuejs.org/v2/guide/instance.html      
@@ -1954,13 +1965,35 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     //get all booklists     
-    getbooklists: function getbooklists() {
+    getbooklists: function getbooklists(page_url) {
       var vm = this;
-      axios.get('/api/booklists').then(function (response) {
+      page_url = page_url || '/api/booklists';
+      axios.get(page_url).then(function (response) {
         //Data warpe into data object  
         vm.booklists = response.data.data;
         console.log(vm.booklists);
+        vm.makePagination(response.data.meta, response.data.links);
       });
+    },
+    //make pagination
+    makePagination: function makePagination(meta, links) {
+      var pagination = {
+        current_page: meta.current_page,
+        last_page: meta.last_page,
+        next_page_url: links.next,
+        previous_page_url: links.prev
+      };
+      this.pagination = pagination;
+    },
+    deleteBooklist: function deleteBooklist(id) {
+      var vm = this;
+      alert(id);
+
+      if (confirm('Are you Sure ?')) {
+        axios["delete"]('api/deletebooklist/' + id).then(function (response) {
+          vm.getbooklists();
+        });
+      }
     }
   }
 });
@@ -37407,7 +37440,7 @@ var render = function() {
       _vm._l(_vm.booklists, function(booklist) {
         return _c(
           "div",
-          { key: booklist.id, staticClass: "card card-body mb-2 bg-info" },
+          { key: booklist.id, staticClass: "card card-body mb-2 bg-secondary" },
           [
             _c("h2", [
               _c("span", [_vm._v("Bookname:-")]),
@@ -37422,10 +37455,77 @@ var render = function() {
             _c("p", [
               _c("strong", [_vm._v("Description:-")]),
               _vm._v(_vm._s(booklist.body))
+            ]),
+            _vm._v(" "),
+            _c("small", [
+              _c(
+                "a",
+                {
+                  staticClass: "btn btn-sm btn-outline-danger ml-1 text-black",
+                  staticStyle: { float: "right" },
+                  on: {
+                    click: function($event) {
+                      return _vm.deleteBooklist(booklist.id)
+                    }
+                  }
+                },
+                [_vm._v("Delete")]
+              ),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-sm btn-outline-primary text-black",
+                  staticStyle: { float: "right" }
+                },
+                [_vm._v("Edit")]
+              )
             ])
           ]
         )
-      })
+      }),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "pagination", staticStyle: { "padding-left": "350px" } },
+        [
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-default",
+              attrs: { disabled: !_vm.pagination.previous_page_url },
+              on: {
+                click: function($event) {
+                  return _vm.getbooklists(_vm.pagination.previous_page_url)
+                }
+              }
+            },
+            [_vm._v("Previous")]
+          ),
+          _vm._v(" "),
+          _c("small", { staticClass: "mt-2" }, [
+            _vm._v(
+              _vm._s(_vm.pagination.current_page) +
+                " of " +
+                _vm._s(_vm.pagination.last_page)
+            )
+          ]),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass: "btn btn primary",
+              attrs: { disabled: !_vm.pagination.next_page_url },
+              on: {
+                click: function($event) {
+                  return _vm.getbooklists(_vm.pagination.next_page_url)
+                }
+              }
+            },
+            [_vm._v("Next")]
+          )
+        ]
+      )
     ],
     2
   )

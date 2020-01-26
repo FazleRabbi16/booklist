@@ -110,7 +110,5 @@ class BooklistController extends Controller
     {
         $book_delete= Booklist::where(["id"=>$id])->delete();
     }
-    public function test(){
-        return view('test');
-    }
+   
 }

@@ -1970,6 +1970,42 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -1980,8 +2016,16 @@ __webpack_require__.r(__webpack_exports__);
         author: '',
         body: ''
       },
+      editbooklistvalue: {
+        id: '',
+        bookname: '',
+        author: '',
+        body: ''
+      },
       success: false,
-      error: false
+      error: false,
+      editSuccess: false,
+      editError: false
     };
   },
   //about created https://vuejs.org/v2/guide/instance.html      
@@ -1989,6 +2033,13 @@ __webpack_require__.r(__webpack_exports__);
     this.getbooklists();
   },
   methods: {
+    //setValue
+    setValue: function setValue(id, author, bookname, body) {
+      this.editbooklistvalue.id = id;
+      this.editbooklistvalue.bookname = bookname;
+      this.editbooklistvalue.author = author;
+      this.editbooklistvalue.body = body;
+    },
     //add new book
     addbooklist: function addbooklist() {
       var vm = this;
@@ -2034,6 +2085,32 @@ __webpack_require__.r(__webpack_exports__);
 
       if (confirm('Are you Sure ?')) {
         axios["delete"]('api/deletebooklist/' + id).then(function (response) {
+          vm.getbooklists();
+        });
+      }
+    },
+    editbooklist: function editbooklist() {
+      var vm = this;
+      var id = vm.editbooklistvalue.id;
+      var bookname = vm.editbooklistvalue.bookname;
+      var author = vm.editbooklistvalue.author;
+      var body = vm.editbooklistvalue.body;
+      console.log(bookname);
+
+      if (bookname == '' || author == '' || body == '') {
+        vm.editError = true;
+      } else {
+        axios.put('api/updatebooklist/' + id, {
+          bookname: bookname,
+          author: author,
+          body: body
+        }).then(function (response) {
+          vm.editSuccess = true;
+          vm.booklist = {
+            bookname: '',
+            author: '',
+            body: ''
+          };
           vm.getbooklists();
         });
       }
@@ -37574,11 +37651,7 @@ var render = function() {
                 }
               ],
               staticClass: "form-control",
-              attrs: {
-                id: "exampleFormControlTextarea1",
-                rows: "5",
-                placeholder: "Write about book"
-              },
+              attrs: { id: "body", rows: "5", placeholder: "Write about book" },
               domProps: { value: _vm.booklist.body },
               on: {
                 input: function($event) {
@@ -37646,7 +37719,22 @@ var render = function() {
                 "button",
                 {
                   staticClass: "btn btn-sm btn-outline-primary text-black",
-                  staticStyle: { float: "right" }
+                  staticStyle: { float: "right" },
+                  attrs: {
+                    type: "button",
+                    "data-toggle": "modal",
+                    "data-target": "#editModal"
+                  },
+                  on: {
+                    click: function($event) {
+                      return _vm.setValue(
+                        booklist.id,
+                        booklist.author,
+                        booklist.bookname,
+                        booklist.body
+                      )
+                    }
+                  }
                 },
                 [_vm._v("Edit")]
               )
@@ -37695,12 +37783,210 @@ var render = function() {
             [_vm._v("Next")]
           )
         ]
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "modal fade",
+          attrs: { id: "editModal", role: "dialog" }
+        },
+        [
+          _c("div", { staticClass: "modal-dialog modal-md" }, [
+            _c("div", { staticClass: "modal-content" }, [
+              _c("div", { staticClass: "modal-header" }, [
+                _c("h4", { staticClass: "modal-title" }, [_vm._v("Edit Item")]),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "close",
+                    attrs: { type: "button", "data-dismiss": "modal" },
+                    on: {
+                      click: function($event) {
+                        _vm.editError = false
+                      }
+                    }
+                  },
+                  [_vm._v("×")]
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticStyle: { "padding-left": "10px" } }, [
+                _vm.editError
+                  ? _c("small", { staticClass: "text-danger" }, [
+                      _vm._v("All field required")
+                    ])
+                  : _vm.editSuccess
+                  ? _c("small", { staticClass: "text-success" }, [
+                      _vm._v("Data submitted succesfully")
+                    ])
+                  : _vm._e()
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "modal-body" }, [
+                _c(
+                  "form",
+                  {
+                    on: {
+                      submit: function($event) {
+                        $event.preventDefault()
+                        return _vm.editbooklist()
+                      }
+                    }
+                  },
+                  [
+                    _c("div", { staticClass: "form-group" }, [
+                      _vm._m(3),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.editbooklistvalue.bookname,
+                            expression: "editbooklistvalue.bookname"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: {
+                          type: "text",
+                          id: "e_bookname",
+                          value: "editbooklistvalue.bookname"
+                        },
+                        domProps: { value: _vm.editbooklistvalue.bookname },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.editbooklistvalue,
+                              "bookname",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "form-group" }, [
+                        _vm._m(4),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.editbooklistvalue.author,
+                              expression: "editbooklistvalue.author"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          attrs: {
+                            type: "text",
+                            id: "e_authorname",
+                            value: "editbooklistvalue.author"
+                          },
+                          domProps: { value: _vm.editbooklistvalue.author },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.editbooklistvalue,
+                                "author",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        })
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-group" }, [
+                      _vm._m(5),
+                      _vm._v(" "),
+                      _c("textarea", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.editbooklistvalue.body,
+                            expression: "editbooklistvalue.body"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: {
+                          id: "e_body",
+                          rows: "5",
+                          value: "editbooklistvalue.body"
+                        },
+                        domProps: { value: _vm.editbooklistvalue.body },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.editbooklistvalue,
+                              "body",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      })
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-primary btn-block mb-2",
+                        attrs: { type: "submit" },
+                        on: {
+                          click: function($event) {
+                            return _vm.editbooklist()
+                          }
+                        }
+                      },
+                      [_vm._v("Submit")]
+                    )
+                  ]
+                )
+              ])
+            ])
+          ])
+        ]
       )
     ],
     2
   )
 }
 var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("label", { attrs: { for: "BookName" } }, [
+      _c("strong", [_vm._v("Book Name")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("label", { attrs: { for: "AuthorName" } }, [
+      _c("strong", [_vm._v("Author Name")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("label", { attrs: { for: "Description" } }, [
+      _c("strong", [_vm._v("Book Description")])
+    ])
+  },
   function() {
     var _vm = this
     var _h = _vm.$createElement

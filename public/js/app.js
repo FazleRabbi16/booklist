@@ -2033,6 +2033,13 @@ __webpack_require__.r(__webpack_exports__);
     this.getbooklists();
   },
   methods: {
+    //submit issue
+    onSubmit: function onSubmit() {
+      /*
+      addbooklist method input data twice time at onece submit.
+      So i use these solution to overcome these problem
+      */
+    },
     //setValue
     setValue: function setValue(id, author, bookname, body) {
       this.editbooklistvalue.id = id;
@@ -37573,7 +37580,7 @@ var render = function() {
           on: {
             submit: function($event) {
               $event.preventDefault()
-              return _vm.addbooklist()
+              return _vm.onSubmit()
             }
           }
         },
@@ -37651,7 +37658,11 @@ var render = function() {
                 }
               ],
               staticClass: "form-control",
-              attrs: { id: "body", rows: "5", placeholder: "Write about book" },
+              attrs: {
+                id: "body",
+                rows: "5",
+                placeholder: "Write about book..."
+              },
               domProps: { value: _vm.booklist.body },
               on: {
                 input: function($event) {
@@ -37668,7 +37679,7 @@ var render = function() {
             "button",
             {
               staticClass: "btn btn-primary btn-block mb-2",
-              attrs: { type: "submit" },
+              attrs: { type: "submit", name: "submit" },
               on: {
                 click: function($event) {
                   return _vm.addbooklist()

@@ -4,7 +4,7 @@
  <small v-if="error" class="text-danger">All field required</small>
  <small v-else-if="success" class="text-success">Data submitted succesfully</small>
  <!-- add form start -->
-<form v-on:submit.prevent="addbooklist()" > 
+<form v-on:submit.prevent="onSubmit()"> 
 <div class="form-group">
 <label for="BookName"><strong>Book Name</strong></label>
 <input type="text" class="form-control" id="bookname"  placeholder="What is your book name ?" v-model="booklist.bookname">
@@ -15,9 +15,9 @@
 </div>
 <div class="form-group">
 <label for="Description"><strong>Book Description</strong></label>
-<textarea class="form-control" id="body" rows="5"  placeholder="Write about book" v-model="booklist.body"></textarea>
+<textarea class="form-control" id="body" rows="5"  placeholder="Write about book..." v-model="booklist.body"></textarea>
 </div>
-<button type="submit" class="btn btn-primary btn-block mb-2" @click="addbooklist()">Submit</button>
+<button type="submit" name="submit" class="btn btn-primary btn-block mb-2" @click="addbooklist()">Submit</button>
 </form>
 <!-- add form end -->
  <div class="card card-body mb-2 bg-secondary" v-for="booklist in booklists" v-bind:key="booklist.id">
@@ -91,6 +91,13 @@ created(){
 this.getbooklists();
 }, 
 methods:{
+//submit issue
+onSubmit(){
+  /*
+  addbooklist method input data twice time at onece submit.
+  So i use these solution to overcome these problem
+  */
+  },
 //setValue
 setValue(id,author,bookname,body){
   this.editbooklistvalue.id=id;

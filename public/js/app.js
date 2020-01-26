@@ -1952,11 +1952,36 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       booklists: [],
-      pagination: {}
+      pagination: {},
+      booklist: {
+        bookname: '',
+        author: '',
+        body: ''
+      },
+      success: false,
+      error: false
     };
   },
   //about created https://vuejs.org/v2/guide/instance.html      
@@ -1964,6 +1989,25 @@ __webpack_require__.r(__webpack_exports__);
     this.getbooklists();
   },
   methods: {
+    //add new book
+    addbooklist: function addbooklist() {
+      var vm = this;
+      var input = vm.booklist;
+
+      if (input.bookname == '' || input.author == '' || input.body == '') {
+        vm.error = true;
+      } else {
+        axios.post('api/booklist', input).then(function (response) {
+          vm.success = true;
+          vm.booklist = {
+            bookname: '',
+            author: '',
+            body: ''
+          };
+          vm.getbooklists();
+        });
+      }
+    },
     //get all booklists     
     getbooklists: function getbooklists(page_url) {
       var vm = this;
@@ -1987,7 +2031,6 @@ __webpack_require__.r(__webpack_exports__);
     },
     deleteBooklist: function deleteBooklist(id) {
       var vm = this;
-      alert(id);
 
       if (confirm('Are you Sure ?')) {
         axios["delete"]('api/deletebooklist/' + id).then(function (response) {
@@ -37437,6 +37480,133 @@ var render = function() {
     [
       _c("h2", [_vm._v("Booklists")]),
       _vm._v(" "),
+      _vm.error
+        ? _c("small", { staticClass: "text-danger" }, [
+            _vm._v("All field required")
+          ])
+        : _vm.success
+        ? _c("small", { staticClass: "text-success" }, [
+            _vm._v("Data submitted succesfully")
+          ])
+        : _vm._e(),
+      _vm._v(" "),
+      _c(
+        "form",
+        {
+          on: {
+            submit: function($event) {
+              $event.preventDefault()
+              return _vm.addbooklist()
+            }
+          }
+        },
+        [
+          _c("div", { staticClass: "form-group" }, [
+            _vm._m(0),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.booklist.bookname,
+                  expression: "booklist.bookname"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: {
+                type: "text",
+                id: "bookname",
+                placeholder: "What is your book name ?"
+              },
+              domProps: { value: _vm.booklist.bookname },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.booklist, "bookname", $event.target.value)
+                }
+              }
+            }),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group" }, [
+              _vm._m(1),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.booklist.author,
+                    expression: "booklist.author"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: {
+                  type: "text",
+                  id: "authorname",
+                  placeholder: "Author name ?"
+                },
+                domProps: { value: _vm.booklist.author },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.booklist, "author", $event.target.value)
+                  }
+                }
+              })
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-group" }, [
+            _vm._m(2),
+            _vm._v(" "),
+            _c("textarea", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.booklist.body,
+                  expression: "booklist.body"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: {
+                id: "exampleFormControlTextarea1",
+                rows: "5",
+                placeholder: "Write about book"
+              },
+              domProps: { value: _vm.booklist.body },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.booklist, "body", $event.target.value)
+                }
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-primary btn-block mb-2",
+              attrs: { type: "submit" },
+              on: {
+                click: function($event) {
+                  return _vm.addbooklist()
+                }
+              }
+            },
+            [_vm._v("Submit")]
+          )
+        ]
+      ),
+      _vm._v(" "),
       _vm._l(_vm.booklists, function(booklist) {
         return _c(
           "div",
@@ -37530,7 +37700,32 @@ var render = function() {
     2
   )
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("label", { attrs: { for: "BookName" } }, [
+      _c("strong", [_vm._v("Book Name")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("label", { attrs: { for: "AuthorName" } }, [
+      _c("strong", [_vm._v("Author Name")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("label", { attrs: { for: "exampleFormControlTextarea1" } }, [
+      _c("strong", [_vm._v("Book Description")])
+    ])
+  }
+]
 render._withStripped = true
 
 
